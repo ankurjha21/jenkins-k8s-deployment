@@ -3,13 +3,13 @@ node {
 stage('Preparation') {
       //Installing kubectl in Jenkins agent
       sh 'curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
-  sh 'chmod +x ./kubectl && mv kubectl /usr/local/sbin'
+  sh 'sudo chmod +x ./kubectl && mv kubectl /usr/local/sbin'
 //Clone git repository
-  git url:'https://bitbucket.org/advatys/jenkins-pipeline.git'
+  git url:'https://github.com/ankurjha21/jenkins-k8s-deployment.git'
    }
 stage('Integration') {
  
-      withKubeConfig([credentialsId: 'jenkins-deployer-credentials', serverUrl: 'https://104.155.31.202']) {
+      withKubeConfig([credentialsId: 'f3dde34d-9eb3-4fb5-bea8-9a9a41c6e3a1', serverUrl: 'http://54.213.46.49']) {
       
          sh 'kubectl create cm nodejs-app --from-file=src/ --namespace=myapp-integration -o=yaml --dry-run > deploy/cm.yaml'
          sh 'kubectl apply -f deploy/ --namespace=myapp-integration'
